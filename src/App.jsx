@@ -1,72 +1,79 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
-// Import your components here
-// import Button from './components/Button';
-// import Navbar from './components/Navbar';
-// import Footer from './components/Footer';
-// import TaskManager from './components/TaskManager';
+// 1. Importar o Provedor de Contexto do Tema
+import { ThemeProvider } from './context/ThemeContext';
 
-function App() {
-  const [count, setCount] = useState(0);
+// 2. Importar o Componente de Layout
+// Assume que você criou 'src/layouts/Layout.jsx'
+import Layout from './layouts/Layout'; 
+
+// 3. Importar os Componentes Principais
+// Assume que você tem 'src/components/TaskManager.jsx'
+import TaskManager from './components/TaskManager'; 
+// Assume que você criou 'src/components/ApiDataFetcher.jsx'
+import ApiDataFetcher from './components/ApiDataFetcher'; 
+// Assume que você criou 'src/components/Card.jsx' (Opcional, mas útil)
+import Card from './components/Card'; 
+
+// Componente de Conteúdo Principal
+function AppContent() {
+  // O estado 'count' do starter file é removido da UI principal para focar nas Tasks
+  const [count, setCount] = useState(0); 
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* Navbar component will go here */}
-      <header className="bg-white dark:bg-gray-800 shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold">PLP Task Manager</h1>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg p-6">
-          <div className="flex flex-col items-center justify-center">
-            <p className="text-lg mb-4">
-              Edit <code className="font-mono bg-gray-200 dark:bg-gray-700 p-1 rounded">src/App.jsx</code> and save to test HMR
+    // O <div> principal de fundo/tema agora está no componente <Layout>
+    <Layout>
+      
+      {/* Container principal usando grid para responsividade (Task 5) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        {/* Task Manager (Task 3) */}
+        <TaskManager />
+        
+        {/* API Integration (Task 4) */}
+        <ApiDataFetcher />
+      </div>
+      
+      {/* O conteúdo original do App.jsx (contador e cabeçalho fixo) 
+        foi removido ou simplificado, mas você pode usar o Card para 
+        demonstrar reusabilidade de componentes. 
+      */}
+      <div className="mt-8">
+        <Card title="Extra Component Test: Counter">
+           <p className="text-center mb-4 text-sm text-gray-500 dark:text-gray-400">
+              Demonstração de um estado simples (useState).
             </p>
-            
-            <div className="flex items-center gap-4 my-4">
+            <div className="flex items-center justify-center gap-4">
+              {/* Note: Usei botões simples aqui, mas você pode usar o componente <Button> */}
               <button
-                onClick={() => setCount((count) => count - 1)}
+                onClick={() => setCount((c) => c - 1)}
                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
               >
                 -
               </button>
               <span className="text-xl font-bold">{count}</span>
               <button
-                onClick={() => setCount((count) => count + 1)}
+                onClick={() => setCount((c) => c + 1)}
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
               >
                 +
               </button>
             </div>
-
-            <p className="text-gray-500 dark:text-gray-400 mt-4">
-              Implement your TaskManager component here
-            </p>
-          </div>
-        </div>
-        
-        {/* API data display will go here */}
-        <div className="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-4">API Data</h2>
-          <p className="text-gray-500 dark:text-gray-400">
-            Fetch and display data from an API here
-          </p>
-        </div>
-      </main>
-
-      {/* Footer component will go here */}
-      <footer className="bg-white dark:bg-gray-800 shadow mt-auto">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} PLP Task Manager. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </div>
+        </Card>
+      </div>
+      
+    </Layout>
   );
 }
 
-export default App; 
+// Envolve a aplicação principal com o ThemeProvider (Task 3: useContext, Task 5: Dark Mode)
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
+
+export default App;
